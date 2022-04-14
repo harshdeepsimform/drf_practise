@@ -26,6 +26,7 @@ urlpatterns = [
     path('login/', jwt_views.TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('register/', user_views.RegisterView.as_view(), name='register'),
+    path('profile/', user_views.UpdateProfileView.as_view(), name='profile'),
 
     path('hello/', user_views.HelloView.as_view(), name='hello'),
 ]

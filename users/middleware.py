@@ -16,7 +16,7 @@ class StackOverflowMiddleware(object):
         '''
         record IP address of visitors
         '''
-        
+
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
 
         if x_forwarded_for:
@@ -34,8 +34,8 @@ class StackOverflowMiddleware(object):
         # request._messages = default_storage(request)
         return None
 
-    def process_exception(self, request, exception): 
-        return HttpResponse("in exception")
+    # def process_exception(self, request, exception): 
+    #     return HttpResponse("in exception")
 
 #RESPONSE FUNCTION:
 

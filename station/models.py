@@ -15,8 +15,8 @@ class Address(models.Model):
     address = models.CharField(max_length=255, verbose_name='Address')
     city = models.CharField(max_length=100)
     country = models.CharField(max_length=100, default='India')
-    Longitude = models.DecimalField(null=True, max_digits=15, decimal_places=10)
-    Latitude = models.DecimalField(null=True, max_digits=15, decimal_places=10)
+    longitude = models.FloatField(null=True)
+    latitude = models.FloatField(null=True)
 
     class Meta:
         abstract = True

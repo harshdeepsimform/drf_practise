@@ -7,6 +7,7 @@ from rest_framework import viewsets
 from rest_framework.permissions import BasePermission, IsAuthenticated, SAFE_METHODS
 from .models import Station, Slot
 # from users.serializers import UserSerializer, GroupSerializer
+from .serializers import StationSerializer
 
 
 class ReadOnly(BasePermission):
@@ -25,6 +26,7 @@ class StationViewSet(viewsets.ModelViewSet):
     queryset = Station.objects.all().order_by('-created_at')
     serializer_class = StationSerializer
     permission_classes = [IsAuthenticated|ReadOnly]
+
 
 
 class SlotViewSet(viewsets.ModelViewSet):

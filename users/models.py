@@ -2,7 +2,6 @@ from distutils.command.upload import upload
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from eth_typing import Address
 
 from .managers import CustomUserManager
 
@@ -31,7 +30,6 @@ class CustomUser(AbstractUser):
 
 from station.models import Address
 
-
 class Profile(Address):
 
     CUSTOMER = 'C'
@@ -47,7 +45,7 @@ class Profile(Address):
     user_type = models.CharField(max_length=10, choices=USER_TYPE, default='C')
 
     def __str__(self):
-        return self.user.username
+        return self.user.email
 
 
 class IPRecord(models.Model):

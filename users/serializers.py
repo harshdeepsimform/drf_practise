@@ -4,7 +4,8 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 
 from .models import CustomUser, Profile
-
+from station.utils import get_location
+import decimal
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -28,7 +29,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ('username', 'password', 'password2', 'email', 'first_name', 'last_name')
+        fields = ('email', 'password', 'password2', 'first_name', 'last_name')
         extra_kwargs = {
             'first_name': {'required': True},
             'last_name': {'required': True}
@@ -42,7 +43,6 @@ class RegisterSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         user = CustomUser.objects.create(
-            username=validated_data['username'],
             email=validated_data['email'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name']
@@ -50,5 +50,31 @@ class RegisterSerializer(serializers.ModelSerializer):
        
         user.set_password(validated_data['password'])
         user.save()
-        profile = Profile.objects.create(user=user)
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+
+    latitude = serializers.FloatField(required=False)
+    longitude = serializers.FloatField(required=False)
+    
+    class Meta:
+        model = Profile
+        fields = ['address', 'city', 'country', 'latitude', 'longitude']
+
+    def update(self, instance, validated_data):
+
+        if not validated_data.get('address'):
+            raise serializers.ValidationError("Address Field should not be blank.")
+
+        lat, lon = get_location(validated_data['address'])
+
+        instance.latitude = float(lat)
+        instance.longitude = float(lon)
+
+        instance.address = validated_data['address']
+        instance.city = validated_data['city']
+        instance.country = validated_data['country']
+        instance.save()
+
+        return instance

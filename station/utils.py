@@ -7,15 +7,23 @@ def get_location(address):
     '''
     get location by geopy library
     '''
+
     url = 'https://nominatim.openstreetmap.org/search/' + urllib.parse.quote(address) +'?format=json'
     response = requests.get(url).json()
 
+    # if not response:
+    #     add = address.split(',')
+    #     if len(add):
+    #         response = get_location(add[1])
+
+    print("GET LOCATION : ", response)
     if response:
-        add = address.split(',')
-        if len(add):
-            response = get_location(add)
         print(response[0]["lat"], response[0]["lon"])
-    return response
+        lat = float(response[0]["lat"])
+        lon = float(response[0]["lon"])
+        return lat, lon
+
+    return 0, 0
 
 
 def find_distance(lat1, long1, lat2, long2):
